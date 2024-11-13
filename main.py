@@ -1,7 +1,7 @@
 import pymysql
 
 from read import read_data_menu
-# from update import update_data_menu
+from update import update_data_menu
 from create import create_data_menu
 
 database_name = 'inventory_management'
