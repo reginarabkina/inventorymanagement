@@ -1,5 +1,7 @@
 from tabulate import tabulate
 
+from search import search_data
+
 
 def format_and_display_table(results, headers):
     """Formats and displays query results in a table format."""
@@ -23,6 +25,7 @@ def display_menu():
     print("  3.2 Transaction Details")
     print("\n[4] Employee Reports")
     print("  4.1 Store Employee List")
+    print("\n[5] Search")
     print("\n0. Exit")
 
 
@@ -54,6 +57,8 @@ def read_data_menu(connection):
             search_customer_and_get_transaction_details(connection)
         elif choice == '4.1':
             view_employees_at_store(connection)
+        elif choice == '5':
+            search_data(connection)
         elif choice == '0':
             print("Exiting menu.")
             break  # Exit the loop
