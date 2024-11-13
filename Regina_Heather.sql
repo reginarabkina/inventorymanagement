@@ -115,6 +115,182 @@ CREATE TABLE ProductStore (
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+DROP PROCEDURE IF EXISTS add_customer;
+
+-- Procedure to Add a Customer
+DELIMITER //
+
+CREATE PROCEDURE add_customer(
+    IN p_first_name VARCHAR(64),
+    IN p_last_name VARCHAR(64),
+    IN p_email VARCHAR(64),
+    IN p_street VARCHAR(64),
+    IN p_city VARCHAR(64),
+    IN p_state VARCHAR(2),
+    IN p_zipcode INT
+)
+BEGIN
+    INSERT INTO Customer (first_name, last_name, email, street, city, state, zipcode)
+    VALUES (p_first_name, p_last_name, p_email, p_street, p_city, p_state, p_zipcode);
+END //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS delete_customer;
+-- Procedure to Delete a Customer
+DELIMITER //
+
+CREATE PROCEDURE delete_customer(
+    IN p_customer_id INT
+)
+BEGIN
+    DELETE FROM Customer
+    WHERE customer_id = p_customer_id;
+END //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS add_store;
+-- Procedure to Add a Store
+DELIMITER //
+
+CREATE PROCEDURE add_store(
+    IN p_name VARCHAR(64),
+    IN p_street VARCHAR(64),
+    IN p_city VARCHAR(64),
+    IN p_state VARCHAR(2),
+    IN p_zipcode INT
+)
+BEGIN
+    INSERT INTO Store (name, street, city, state, zipcode)
+    VALUES (p_name, p_street, p_city, p_state, p_zipcode);
+END //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS delete_store;
+-- Procedure to Delete a Store
+DELIMITER //
+
+CREATE PROCEDURE delete_store(
+    IN p_name VARCHAR(64),
+    IN p_street VARCHAR(64),
+    IN p_city VARCHAR(64),
+    IN p_state VARCHAR(2),
+    IN p_zipcode INT
+)
+BEGIN
+    DELETE FROM Store
+    WHERE name = p_name
+    AND street = p_street
+    AND city = p_city
+    AND state = p_state
+    AND zipcode = p_zipcode;
+END //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS add_employee;
+-- Procedure to Add an Employee
+DELIMITER //
+
+CREATE PROCEDURE add_employee(
+    IN p_first_name VARCHAR(64),
+    IN p_last_name VARCHAR(64),
+    IN p_role VARCHAR(64),
+    IN p_store_name VARCHAR(64),
+    IN p_store_street VARCHAR(64),
+    IN p_store_city VARCHAR(64),
+    IN p_store_state VARCHAR(2),
+    IN p_store_zipcode INT
+)
+BEGIN
+    INSERT INTO Employee (first_name, last_name, role, store_name, store_street, store_city, store_state, store_zipcode)
+    VALUES (p_first_name, p_last_name, p_role, p_store_name, p_store_street, p_store_city, p_store_state, p_store_zipcode);
+END //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS delete_employee;
+-- Procedure to Delete an Employee
+DELIMITER //
+
+CREATE PROCEDURE delete_employee(
+    IN p_employee_id INT
+)
+BEGIN
+    DELETE FROM Employee
+    WHERE employee_id = p_employee_id;
+END //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS add_transaction;
+-- Procedure to Add a Transaction
+DELIMITER //
+
+CREATE PROCEDURE add_transaction(
+    IN p_customer_id INT,
+    IN p_total_amount FLOAT,
+    IN p_date DATE,
+    IN p_payment_method ENUM('credit', 'debit', 'cash', 'check', 'ebt')
+)
+BEGIN
+    INSERT INTO Transaction (customer_id, total_amount, date, payment_method)
+    VALUES (p_customer_id, p_total_amount, p_date, p_payment_method);
+END //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS delete_transaction;
+-- Procedure to Delete a Transaction
+DELIMITER //
+
+CREATE PROCEDURE delete_transaction(
+    IN p_transaction_id INT
+)
+BEGIN
+    DELETE FROM Transaction
+    WHERE transaction_id = p_transaction_id;
+END //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS add_product;
+-- Procedure to Add a Product
+DELIMITER //
+
+CREATE PROCEDURE add_product(
+    IN p_product_name VARCHAR(64),
+    IN p_description VARCHAR(128),
+    IN p_price FLOAT
+)
+BEGIN
+    INSERT INTO Product (product_name, description, price)
+    VALUES (p_product_name, p_description, p_price);
+END //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS delete_product;
+-- Procedure to Delete a Product
+DELIMITER //
+
+CREATE PROCEDURE delete_product(
+    IN p_product_id INT
+)
+BEGIN
+    DELETE FROM Product
+    WHERE product_id = p_product_id;
+END //
+
+DELIMITER ;
 
 INSERT INTO Store (name, street, city, state, zipcode) VALUES
 ('TechWorld', '123 Tech Blvd', 'San Francisco', 'CA', 94107),
@@ -195,3 +371,5 @@ INSERT INTO ProductStore (product_id, store_name, store_street, store_city, stor
 (5, 'FashionHub', '2020 Fashion St', 'Miami', 'FL', 33101, 50),
 (6, 'HomeEssentials', '3030 Living Rd', 'Dallas', 'TX', 75201, 200),
 (7, 'PetStore', '4040 Animal Ln', 'Houston', 'TX', 77001, 250);
+
+

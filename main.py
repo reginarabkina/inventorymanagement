@@ -1,7 +1,8 @@
 import pymysql
 
 from read import read_data_menu
-from update import update_data_menu
+# from update import update_data_menu
+from create import create_data_menu
 
 database_name = 'inventory_management'
 
@@ -39,8 +40,8 @@ def main():
             print("5. Exit")
             choice = input("Enter your choice: ")
 
-            # if choice == '1':
-            #     create_data_menu(connection)
+            if choice == '1':
+                create_data_menu(connection)
             if choice == '2':
                 read_data_menu(connection)
             elif choice == '3':
