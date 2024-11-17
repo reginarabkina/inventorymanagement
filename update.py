@@ -18,7 +18,7 @@ def display_menu():
     print("\n[5] Store Data")
     print("  5.1 Update Store Information")
     print("  5.2 Update Product Quantity in Store")
-    print("\n0. Exit")
+    print("\n0. Back to Main Menu")
 
 def update_data_menu(connection):
     """Menu for updating data in various tables."""
