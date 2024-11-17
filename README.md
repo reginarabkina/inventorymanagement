@@ -25,9 +25,14 @@ This project includes the following components:
 To run this project, you will need the following:
 
 - **MySQL Database**: A MySQL server running locally or remotely with access credentials.
-- **Python 3.x**: Python version 3.6 or higher.
-- **Libraries**: `pymysql` and `tabulate`
+	- Download MySQL from [MySQL Downloads Page](https://dev.mysql.com/downloads/installer/)
+	- Make sure you have the necessary credentials (username and password) to connect to the MySQL database.
 
+- **Python 3.x**: Python version 3.6 or higher.
+	- Download Python from the [Python Downloads Page](https://www.python.org/downloads/)
+	- Install Python 3.x (version 3.6 or higher is recommended).
+
+- **Libraries**: `pymysql` and `tabulate`
   
   Install the required libraries using pip:
   ```bash
@@ -77,3 +82,4 @@ Once connected, you will be presented with a simple text-based menu to choose fr
 3. Update Data: Modify existing records.
 4. Delete Data: Remove records from the database.
 5. Exit: Close the application.
+
