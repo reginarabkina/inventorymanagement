@@ -7,18 +7,18 @@ def format_and_display_table(results, headers):
 def display_menu():
     """Displays a categorized menu."""
     print("\n--- Update Data Menu ---")
-    print("\n[1] Sales Data")
-    print("\n[2] Inventory Data")
-    print("\n[3] Customer Data")
-    print("  3.1 Update Customer Information")
-    print("\n[4] Employee Data")
-    print("  4.1 Update Employee Information")
-    print("\n[5] Product Data")
-    print("  5.1 Update Product Information")
-    print("\n[6] Store Data")
-    print("  6.1 Update Store Information")
-    print("  6.2 Update Product Quantity in Store")
-    print("\n0. Exit")
+    print("\n[1] Transactions Data")
+    print("  1.1 Update Transaction")
+    print("\n[2] Customer Data")
+    print("  2.1 Update Customer Information")
+    print("\n[3] Employee Data")
+    print("  3.1 Update Employee Information")
+    print("\n[4] Product Data")
+    print("  4.1 Update Product Information")
+    print("\n[5] Store Data")
+    print("  5.1 Update Store Information")
+    print("  5.2 Update Product Quantity in Store")
+    print("\n0. Back to Main Menu")
 
 def update_data_menu(connection):
     """Menu for updating data in various tables."""
@@ -26,19 +26,21 @@ def update_data_menu(connection):
         display_menu()
         choice = input("\nEnter your choice: ")
 
-        if choice == '3.1':
+        if choice == '1.1':
+            update_transaction(connection)
+        elif choice == '2.1':
             print()
             update_customer_info(connection)
-        elif choice == '4.1':
+        elif choice == '3.1':
             print()
             update_employee_info(connection)
-        elif choice == '5.1':
+        elif choice == '4.1':
             print()
             update_product_info(connection)
-        elif choice == '6.1':
+        elif choice == '5.1':
             print()
             update_store_info(connection)
-        elif choice == '6.2':
+        elif choice == '5.2':
             print()
             update_product_quantity_in_store(connection)
         elif choice == '0':
@@ -312,6 +314,114 @@ def update_product_quantity_in_store(connection):
         ])
         connection.commit()
         print(f"Product quantity for product ID {product_id} updated successfully!")
+
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        connection.rollback()
+
+def search_update_transaction(connection):
+    from search import search_transactions
+    """Allows user to search for a transaction by customer first name, last name, or email."""
+    print("\nSearch Options for Transaction:")
+    search_option = input("Search by [1] Customer Name (First & Last), [2] Customer Email? Enter 1 or 2: ").strip()
+
+    if search_option == '1':
+        first_name = input("Enter the first name: ").strip()
+        last_name = input("Enter the last name: ").strip()
+        customer_name = f"{first_name} {last_name}"
+        search_transactions(connection, customer_name, '')
+    elif search_option == '2':
+        email = input("Enter the email: ").strip()
+        search_transactions(connection, '', email)
+    else:
+        print("Invalid option. Returning to the main menu.")
+        return None
+
+    try:
+        transaction_id = int(input("\nEnter the Transaction ID of the transaction you want to update: "))
+        return transaction_id
+    except ValueError:
+        print("Invalid input. Please enter a valid Transaction ID.")
+        return None
+
+
+
+def update_transaction(connection):
+    """Update transaction details, including payment method and products."""
+    try:
+        transaction_id = search_update_transaction(connection)
+        if transaction_id is None:
+            return
+
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT total_amount, payment_method
+            FROM Transaction
+            WHERE transaction_id = %s
+        """, (transaction_id,))
+        transaction = cursor.fetchone()
+
+        if not transaction:
+            print(f"Transaction ID {transaction_id} not found.")
+            return
+
+        total_amount, payment_method = transaction
+        print(f"\nCurrent Transaction Details:")
+        print(f"Total Amount: {total_amount}")
+        print(f"Payment Method: {payment_method}")
+
+        cursor.execute("""
+            SELECT tp.product_id, p.product_name, tp.product_quantity
+            FROM TransactionProduct tp
+            JOIN Product p ON tp.product_id = p.product_id
+            WHERE tp.transaction_id = %s
+        """, (transaction_id,))
+        products = cursor.fetchall()
+
+        if not products:
+            print("No products found in this transaction.")
+            return
+
+        print("\nProducts in this transaction:")
+        headers = ['Product ID', 'Product Name', 'Quantity']
+        format_and_display_table(products, headers)
+
+        product_id = int(input("\nEnter the Product ID of the product you want to update: "))
+        new_quantity = int(input("Enter the new quantity for the product: "))
+
+        cursor.execute("""
+            UPDATE TransactionProduct
+            SET product_quantity = %s
+            WHERE transaction_id = %s AND product_id = %s
+        """, (new_quantity, transaction_id, product_id))
+        connection.commit()
+        print(f"Product quantity for Product ID {product_id} updated to {new_quantity} in transaction {transaction_id}.")
+
+        more_products = input("\nDo you want to update another product? (y/n): ").strip().lower()
+        while more_products == 'y':
+            product_id = int(input("Enter the Product ID to update: "))
+            new_quantity = int(input("Enter the new quantity for the product: "))
+            cursor.execute("""
+                UPDATE TransactionProduct
+                SET product_quantity = %s
+                WHERE transaction_id = %s AND product_id = %s
+            """, (new_quantity, transaction_id, product_id))
+            connection.commit()
+            print(f"Product quantity for Product ID {product_id} updated to {new_quantity} in transaction {transaction_id}.")
+            more_products = input("\nDo you want to update another product? (y/n): ").strip().lower()
+
+        update_transaction_info = input("\nDo you want to update the total amount and payment method for this transaction? (y/n): ").strip().lower()
+        if update_transaction_info == 'y':
+            total_amount = float(input("Enter the new total amount: "))
+            payment_method = input("Enter the new payment method (credit, debit, cash, check, ebt): ").strip()
+
+            cursor.execute("""
+                UPDATE Transaction
+                SET total_amount = %s, payment_method = %s
+                WHERE transaction_id = %s
+            """, (total_amount, payment_method, transaction_id))
+            connection.commit()
+            print(f"Transaction {transaction_id} updated successfully with new total amount and payment method.")
 
     except Exception as e:
         print(f"Error occurred: {e}")

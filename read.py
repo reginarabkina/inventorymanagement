@@ -26,7 +26,7 @@ def display_menu():
     print("\n[4] Employee Reports")
     print("  4.1 Store Employee List")
     print("\n[5] Search")
-    print("\n0. Exit")
+    print("\n0. Back to Main Menu")
 
 
 def read_data_menu(connection):
