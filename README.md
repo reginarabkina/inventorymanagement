@@ -32,11 +32,11 @@ To run this project, you will need the following:
 	- Download Python from the [Python Downloads Page](https://www.python.org/downloads/)
 	- Install Python 3.x (version 3.6 or higher is recommended).
 
-- **Libraries**: `pymysql` and `tabulate`
+- **Libraries**: `pymysql`, `tabulate`, `rich`
   
   Install the required libraries using pip:
   ```bash
-  pip install pymysql tabulate
+  pip install pymysql tabulate rich
   ```
 
 -- 
