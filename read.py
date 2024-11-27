@@ -1,5 +1,5 @@
 from tabulate import tabulate
-
+from rich import print
 from search import search_data
 
 
@@ -82,7 +82,8 @@ def view_store_sales_performance(connection):
         results = cursor.fetchall()
         headers = [desc[0] for desc in cursor.description]
         print("\n--- Sales Performance By Store ---")
-        format_and_display_table(results, headers)
+        # format_and_display_table(results, headers)
+        plot_sales_performance(results)
 
 
 def view_yearly_sales_breakdown(connection):
@@ -148,8 +149,8 @@ def view_product_availability(connection):
         headers = [desc[0] for desc in cursor.description]
 
         print("\n--- Product Availability ---")
-        format_and_display_table(results, headers)
-
+        # format_and_display_table(results, headers)
+        plot_product_availability(results)
 
 def view_low_inventory_alert(connection):
     threshold = input("Enter threshold: ").strip()
@@ -251,3 +252,26 @@ def search_customer_and_get_transaction_details(connection):
     if customer_id:
         transaction_date = input("Enter the transaction date (YYYY-MM-DD): ").strip()
         get_customer_transaction_details(connection, customer_id, transaction_date)
+
+
+def plot_sales_performance(store_data):
+    """Plots sales performane levels as a bar chart."""
+
+    for store, quantity, revenue in store_data:
+        bar_length = int(revenue / 50)
+        formatted_output = f"{store.ljust(15)} | {quantity} items sold".ljust(30) + f"| ${revenue:,.2f}".ljust(20) + f"| {'█' * bar_length}"
+        print(formatted_output)
+
+def plot_product_availability(product_data):
+    """Plots product availability levels as a bar chart."""
+
+    for product_id, product_name, description, price, store_name, store_street, store_city, store_state, store_zipcode, product_quantity in product_data:
+        bar_length = int(product_quantity / 10)
+        formatted_output = (
+            f"{product_name.ljust(20)}" +
+            f"| ${price:,.2f}".ljust(15) +
+            f"| {store_name.ljust(15)} | {product_quantity:>5} units".ljust(20) +
+            f"| {'█' * bar_length}"
+        )
+        print(formatted_output)
+
