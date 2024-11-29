@@ -642,3 +642,182 @@ END //
 
 DELIMITER ;
 
+
+-- ------------------------ CREATE ------------------------ --
+DROP PROCEDURE IF EXISTS AddCustomer;
+
+-- Procedure to Add a Customer
+DELIMITER //
+
+CREATE PROCEDURE AddCustomer(
+    IN p_first_name VARCHAR(64),
+    IN p_last_name VARCHAR(64),
+    IN p_email VARCHAR(64),
+    IN p_street VARCHAR(64),
+    IN p_city VARCHAR(64),
+    IN p_state VARCHAR(2),
+    IN p_zipcode INT
+)
+BEGIN
+    INSERT INTO Customer (first_name, last_name, email, street, city, state, zipcode)
+    VALUES (p_first_name, p_last_name, p_email, p_street, p_city, p_state, p_zipcode);
+END //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS AddStore;
+-- Procedure to Add a Store
+DELIMITER //
+
+CREATE PROCEDURE AddStore(
+    IN p_name VARCHAR(64),
+    IN p_street VARCHAR(64),
+    IN p_city VARCHAR(64),
+    IN p_state VARCHAR(2),
+    IN p_zipcode INT
+)
+BEGIN
+    INSERT INTO Store (name, street, city, state, zipcode)
+    VALUES (p_name, p_street, p_city, p_state, p_zipcode);
+END //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS AddEmployee;
+-- Procedure to Add an Employee
+DELIMITER //
+
+CREATE PROCEDURE AddEmployee(
+    IN p_first_name VARCHAR(64),
+    IN p_last_name VARCHAR(64),
+    IN p_role VARCHAR(64),
+    IN p_store_name VARCHAR(64),
+    IN p_store_street VARCHAR(64),
+    IN p_store_city VARCHAR(64),
+    IN p_store_state VARCHAR(2),
+    IN p_store_zipcode INT
+)
+BEGIN
+    INSERT INTO Employee (first_name, last_name, role, store_name, store_street, store_city, store_state, store_zipcode)
+    VALUES (p_first_name, p_last_name, p_role, p_store_name, p_store_street, p_store_city, p_store_state, p_store_zipcode);
+END //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS AddTransaction;
+-- Procedure to Add a Transaction
+DELIMITER //
+
+CREATE PROCEDURE AddTransaction(
+    IN p_customer_id INT,
+    IN p_total_amount FLOAT,
+    IN p_date DATE,
+    IN p_payment_method ENUM('credit', 'debit', 'cash', 'check', 'ebt')
+)
+BEGIN
+    INSERT INTO Transaction (customer_id, total_amount, date, payment_method)
+    VALUES (p_customer_id, p_total_amount, p_date, p_payment_method);
+END //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS AddProduct;
+-- Procedure to Add a Product
+DELIMITER //
+
+CREATE PROCEDURE AddProduct(
+    IN p_product_name VARCHAR(64),
+    IN p_description VARCHAR(128),
+    IN p_price FLOAT
+)
+BEGIN
+    INSERT INTO Product (product_name, description, price)
+    VALUES (p_product_name, p_description, p_price);
+END //
+
+DELIMITER ;
+
+
+
+-- ------------------------ DELETE ------------------------ --
+DROP PROCEDURE IF EXISTS DeleteCustomer;
+-- Procedure to Delete a Customer
+DELIMITER //
+
+CREATE PROCEDURE DeleteCustomer(
+    IN p_customer_id INT
+)
+BEGIN
+    DELETE FROM Customer
+    WHERE customer_id = p_customer_id;
+END //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS DeleteStore;
+-- Procedure to Delete a Store
+DELIMITER //
+
+CREATE PROCEDURE DeleteStore(
+    IN p_name VARCHAR(64),
+    IN p_street VARCHAR(64),
+    IN p_city VARCHAR(64),
+    IN p_state VARCHAR(2),
+    IN p_zipcode INT
+)
+BEGIN
+    DELETE FROM Store
+    WHERE name = p_name
+    AND street = p_street
+    AND city = p_city
+    AND state = p_state
+    AND zipcode = p_zipcode;
+END //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS DeleteEmployee;
+-- Procedure to Delete an Employee
+DELIMITER //
+
+CREATE PROCEDURE DeleteEmployee(
+    IN p_employee_id INT
+)
+BEGIN
+    DELETE FROM Employee
+    WHERE employee_id = p_employee_id;
+END //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS DeleteTransaction;
+-- Procedure to Delete a Transaction
+DELIMITER //
+
+CREATE PROCEDURE DeleteTransaction(
+    IN p_transaction_id INT
+)
+BEGIN
+    DELETE FROM Transaction
+    WHERE transaction_id = p_transaction_id;
+END //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS DeleteProduct;
+-- Procedure to Delete a Product
+DELIMITER //
+
+CREATE PROCEDURE DeleteProduct(
+    IN p_product_id INT
+)
+BEGIN
+    DELETE FROM Product
+    WHERE product_id = p_product_id;
+END //
+
+DELIMITER ;
+

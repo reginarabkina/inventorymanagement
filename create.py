@@ -9,7 +9,7 @@ def create_customer(connection):
     zipcode = int(input("Enter Customer Zipcode: "))
     
     cursor = connection.cursor()
-    cursor.callproc('add_customer', [first_name, last_name, email, street, city, state, zipcode])
+    cursor.callproc('AddCustomer', [first_name, last_name, email, street, city, state, zipcode])
     connection.commit()
     print(f"Customer {first_name} {last_name} added successfully.")
 
@@ -22,7 +22,7 @@ def create_store(connection):
     zipcode = int(input("Enter Store Zipcode: "))
     
     cursor = connection.cursor()
-    cursor.callproc('add_store', [name, street, city, state, zipcode])
+    cursor.callproc('AddStore', [name, street, city, state, zipcode])
     connection.commit()
     print(f"Store {name} added successfully.")
 
@@ -38,7 +38,7 @@ def create_employee(connection):
     store_zipcode = int(input("Enter Store Zipcode: "))
     
     cursor = connection.cursor()
-    cursor.callproc('add_employee', [first_name, last_name, role, store_name, store_street, store_city, store_state, store_zipcode])
+    cursor.callproc('AddEmployee', [first_name, last_name, role, store_name, store_street, store_city, store_state, store_zipcode])
     connection.commit()
     print(f"Employee {first_name} {last_name} added successfully.")
 
@@ -50,7 +50,7 @@ def create_transaction(connection):
     payment_method = input("Enter Payment Method: ")
     
     cursor = connection.cursor()
-    cursor.callproc('add_transaction', [customer_id, total_amount, date, payment_method])
+    cursor.callproc('AddTransaction', [customer_id, total_amount, date, payment_method])
     connection.commit()
     print(f"Transaction added for Customer ID {customer_id}.")
 
@@ -61,7 +61,7 @@ def create_product(connection):
     price = float(input("Enter Product Price: "))
     
     cursor = connection.cursor()
-    cursor.callproc('add_product', [product_name, description, price])
+    cursor.callproc('AddProduct', [product_name, description, price])
     connection.commit()
     print(f"Product {product_name} added successfully.")
 
