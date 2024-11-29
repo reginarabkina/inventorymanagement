@@ -5,7 +5,7 @@ def delete_customer(connection):
     cursor = connection.cursor()
     
     # Check if the customer exists
-    cursor.execute("SELECT COUNT(*) FROM customers WHERE customer_id = %s", (customer_id,))
+    cursor.execute("SELECT COUNT(*) FROM Customer WHERE customer_id = %s", (customer_id,))
     if cursor.fetchone()[0] == 0:
         print(f"Customer with ID {customer_id} does not exist.")
         return
@@ -49,7 +49,7 @@ def delete_employee(connection):
     cursor = connection.cursor()
     
     # Check if the employee exists
-    cursor.execute("SELECT COUNT(*) FROM employees WHERE employee_id = %s", (employee_id,))
+    cursor.execute("SELECT COUNT(*) FROM Employee WHERE employee_id = %s", (employee_id,))
     if cursor.fetchone()[0] == 0:
         print(f"Employee with ID {employee_id} does not exist.")
         return
@@ -67,7 +67,7 @@ def delete_transaction(connection):
     cursor = connection.cursor()
     
     # Check if the transaction exists
-    cursor.execute("SELECT COUNT(*) FROM transactions WHERE transaction_id = %s", (transaction_id,))
+    cursor.execute("SELECT COUNT(*) FROM Transaction WHERE transaction_id = %s", (transaction_id,))
     if cursor.fetchone()[0] == 0:
         print(f"Transaction with ID {transaction_id} does not exist.")
         return
@@ -85,7 +85,7 @@ def delete_product(connection):
     cursor = connection.cursor()
     
     # Check if the product exists
-    cursor.execute("SELECT COUNT(*) FROM products WHERE product_id = %s", (product_id,))
+    cursor.execute("SELECT COUNT(*) FROM Product WHERE product_id = %s", (product_id,))
     if cursor.fetchone()[0] == 0:
         print(f"Product with ID {product_id} does not exist.")
         return

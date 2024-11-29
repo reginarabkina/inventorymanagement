@@ -136,12 +136,12 @@ def search_employee(connection):
     results = cursor.fetchall()
 
     if not results:
-        print("No customers found matching your search criteria.")
+        print("No employees found matching your search criteria.")
         return None
 
     # Display the search results
-    print("\nFound the following customers:")
-    headers = ['Customer ID', 'First Name', 'Last Name', 'Email']
+    print("\nFound the following employees:")
+    headers = ['Employee ID', 'First Name', 'Last Name', 'Store Name']
     format_and_display_table(results, headers)
 
     # Let the user choose a customer
@@ -149,7 +149,7 @@ def search_employee(connection):
         customer_id = int(input("\nEnter the Employee ID of the employee you want to update: "))
         return customer_id
     except ValueError:
-        print("Invalid input. Please enter a valid Customer ID.")
+        print("Invalid input. Please enter a valid Employee ID.")
         return None
 
 def search_product(connection):
@@ -172,7 +172,7 @@ def search_product(connection):
 
     # Display the search results
     print("\nFound the following products:")
-    headers = ['Customer ID', 'First Name', 'Last Name', 'Email']
+    headers = ['Product ID', 'Product Name', 'Description', 'Price']
     format_and_display_table(results, headers)
 
     # Let the user choose a customer
@@ -328,8 +328,7 @@ def search_update_transaction(connection):
     if search_option == '1':
         first_name = input("Enter the first name: ").strip()
         last_name = input("Enter the last name: ").strip()
-        customer_name = f"{first_name} {last_name}"
-        search_transactions(connection, customer_name, '')
+        search_transactions(connection, first_name, last_name, '')
     elif search_option == '2':
         email = input("Enter the email: ").strip()
         search_transactions(connection, '', email)

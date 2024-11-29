@@ -82,9 +82,10 @@ def search_transactions_and_display_all(connection):
         "Would you like to (1) search for transactions by customer or date or (2) view all transactions? ").strip()
 
     if choice == '1':
-        customer_name = input("Enter customer's name: ").strip()
-        transaction_date = input("Enter transaction date (YYYY-MM-DD): ").strip()
-        search_transactions(connection, customer_name, transaction_date)
+        first_name = input("Enter customer's first name: ").strip()
+        last_name = input("Enter customer's last name: ").strip()
+        date = input("Enter transaction date (YYYY-MM-DD): ").strip()
+        search_transactions(connection, first_name, last_name, date)
     elif choice == '2':
         display_all_transactions(connection)
     else:
@@ -126,7 +127,7 @@ def display_all_employees(connection):
 
 def show_all_records(entity, connection):
     """Show all records from a specified entity."""
-    if entity == 'Transactions':
+    if entity == 'Transaction':
         display_all_transactions(connection)
     elif entity == 'Customer':
         display_all_customers(connection)
@@ -142,10 +143,11 @@ def search_option(entity, connection):
         store_name = input("Enter store name: ").strip()
         date = input("Enter date (YYYY-MM-DD): ").strip()
         search_sales(connection, store_name, date)
-    elif entity == "Transactions":
-        customer_name = input("Enter customer's name: ").strip()
-        transaction_date = input("Enter transaction date (YYYY-MM-DD): ").strip()
-        search_transactions(connection, customer_name, transaction_date)
+    elif entity == "Transaction":
+        first_name = input("Enter customer's first name: ").strip()
+        last_name = input("Enter customer's last name: ").strip()
+        date = input("Enter transaction date (YYYY-MM-DD): ").strip()
+        search_transactions(connection, first_name, last_name, date)
     elif entity == "Customer":
         first_name = input("Enter customer's first name: ").strip()
         last_name = input("Enter customer's last name: ").strip()
@@ -165,15 +167,17 @@ def search_sales(connection, store_name, date):
         display_table_with_search_option(results, headers, "Sales", connection)
 
 
-def search_transactions(connection, customer_name, transaction_date):
+def search_transactions(connection, first_name, last_name, date):
     """Search for transactions based on customer or date."""
     with connection.cursor() as cursor:
-        query = """
-            SELECT * FROM Transactions 
-            WHERE customer_name LIKE %s AND transaction_date LIKE %s
+        query = query = """
+            SELECT t.* 
+            FROM Transaction t
+            JOIN Customer c ON t.customer_id = c.customer_id
+            WHERE c.first_name LIKE %s AND c.last_name LIKE %s AND t.date LIKE %s
         """
         try:
-            cursor.execute(query, (f"%{customer_name}%", f"%{transaction_date}%"))
+            cursor.execute(query, (f"%{first_name}%", f"%{last_name}%", f"%{date}%"))
             results = cursor.fetchall()
             headers = [desc[0] for desc in cursor.description]
             display_table_with_search_option(results, headers, "Transactions", connection)
